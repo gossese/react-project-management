@@ -5,8 +5,8 @@ import { useState, useRef } from "react";
 function App() {
   const project = useRef();
 
-  const [projects, setProjects] = useState([{ title: 'first title', description: 'first descriptioin' }, { title: 'second title', description: 'second descriptioin' }]);
-  const [creatingProject, setCreatingProject] = useState(false);
+  const [projects, setProjects] = useState([{ title: 'learning React', description: 'first descriptioin' }, { title: 'second title', description: 'second descriptioin' }]);
+  const [creatingProject, setCreatingProject] = useState(true);
 
   function handleNewProject() {
     const form = project.current;
