@@ -3,53 +3,92 @@ import NoProjectSelected from "./components/NoProjectSelected";
 import NewProject from "./components/NewProject";
 import Project from "./components/Project";
 import { useState } from "react";
-import { removeFromArray } from "./util";
+import { ProjectState } from "./constants/ProjectState";
+import { demoProjects } from "./data/DemoProjects";
 
 function App() {
-  const [projects, setProjects] = useState([{ title: 'learning React', description: 'first descriptioin', id: 0.5 }, { title: 'second title', description: 'second descriptioin', id: 0.6, date: 11 - 11 - 2025 }]);
+  const [projects, setProjects] = useState(demoProjects);
 
-  const ProjectState = Object.freeze({ //immutable enum 
-    NONE_SELECTED: 'noneSelected',
-    IS_CREATING: 'isCreating',
-    IS_EDITING: 'isEditing'
-  });
-
-  const [creatingProject, setCreatingProject] = useState(ProjectState.NONE_SELECTED);
+  const [uiState, setUiState] = useState(ProjectState.NONE_SELECTED);
   const [selectedProjectId, setProjectId] = useState(null);
+  const [taskList, setTaskList] = useState([]);
+
+  // TASKS --------------------------
+
+  function handleAddTask(taskName) {
+    setTaskList((prev) => [
+      ...prev,
+      {
+        prId: selectedProjectId,
+        tName: taskName,
+      },
+    ]);
+  }
+
+  function handleDeleteTask(indexToDelete) {
+    setTaskList((prev) => {
+      return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete
+    });
+  }
+
+  // Projects --------------------------
 
   function handleSaveNewProject(newProject) {
-    setProjects(prev => [...prev, newProject]);
-    setCreatingProject(ProjectState.NONE_SELECTED);
+    setProjects((prev) => [...prev, newProject]);
+    setUiState(ProjectState.NONE_SELECTED);
   }
 
   function handleClickProject(project) {
-    setCreatingProject(ProjectState.IS_EDITING);
+    setUiState(ProjectState.IS_EDITING);
     setProjectId(project.id);
   }
 
-  function handleDeleteProject(project) {
-    setProjects(prev => removeFromArray([...prev], p => p.id === project.id))
-    setCreatingProject(ProjectState.NONE_SELECTED);
+  function handleDeleteProject() {
+    setProjects((prev) => prev.filter((p) => p.id !== selectedProjectId)); //only use the element for filtering
+    setUiState(ProjectState.NONE_SELECTED);
   }
 
-  let mainScreen;
-
-  if (creatingProject === ProjectState.IS_CREATING) {
-    mainScreen = <NewProject onAdd={handleSaveNewProject} onCancel={() => setCreatingProject(ProjectState.NONE_SELECTED)} />
-  }
-  else if (creatingProject === ProjectState.IS_EDITING) {
-    mainScreen = <Project project={projects.find((p) => p.id == selectedProjectId)} deleteProject={handleDeleteProject}></Project>
-  } else {
-    mainScreen = <NoProjectSelected handleClick={() => setCreatingProject(ProjectState.IS_CREATING)} />
+  function renderMainScreen() {
+    switch (uiState) {
+      case ProjectState.IS_CREATING:
+        return (
+          <NewProject
+            onAdd={handleSaveNewProject}
+            onCancel={() => setUiState(ProjectState.NONE_SELECTED)}
+          />
+        );
+      case ProjectState.IS_EDITING:
+        return (
+          <Project
+            project={projects.find((p) => p.id == selectedProjectId)}
+            deleteProject={handleDeleteProject}
+            handleAddTask={handleAddTask}
+            handleDeleteTask={handleDeleteTask}
+            taskList={taskList}
+          />
+        );
+      default: // ProjectState.NONE_SELECTED
+        return (
+          <NoProjectSelected
+            handleClick={() => setUiState(ProjectState.IS_CREATING)}
+          />
+        );
+    }
   }
 
   return (
     <main className="flex flex-row gap-8 h-screen">
-      {/* aside[title="tiet"]{hoi}>div */}
+      {/* aside[title="de Titel"]{hoi}>div Emmet*/}
       {/* ul>li*5 */}
       <h1 className="hidden">Project Management React App</h1>
-      <Sidebar projects={projects} handleClick={() => { setCreatingProject(ProjectState.IS_CREATING) }} handleClickProject={(project) => handleClickProject(project)} />
-      {mainScreen}
+      <Sidebar
+        projects={projects}
+        handleClick={() => {
+          setUiState(ProjectState.IS_CREATING);
+        }}
+        handleClickProject={(project) => handleClickProject(project)}
+      />
+      {renderMainScreen()}
     </main>
   );
 }

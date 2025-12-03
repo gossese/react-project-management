@@ -1,6 +1,6 @@
 import TaskOverview from "./Task/TaskOverview";
 
-export default function Project({deleteProject, project}){
+export default function Project({deleteProject, project, handleDeleteTask, handleAddTask, taskList}){
 
     return (
         <article className="w-[35rem] mt-24">
@@ -11,7 +11,7 @@ export default function Project({deleteProject, project}){
             <time className="pb-2 text-stone-400 font-light text-sm" dateTime={project.date}>{project.date}</time>
             <p className="py-2 text-stone-800">{project.description}</p>
             <hr className="decoration-gray-500 h-6"></hr>
-            <TaskOverview project={project}></TaskOverview>
+            <TaskOverview project={project} handleAddTask={handleAddTask} handleDeleteTask={handleDeleteTask} taskList={taskList}></TaskOverview>
         </article>
     )
 }
