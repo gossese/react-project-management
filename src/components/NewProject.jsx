@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import Input from "./Input"
 
-export default function NewProject({onAdd}){
+export default function NewProject({onAdd, onCancel}){
     const title = useRef();
     const description = useRef();
     const dueDate = useRef();
@@ -22,7 +22,7 @@ export default function NewProject({onAdd}){
     return ( 
         <div className="w-[35rem] mt-16 mr-8 flex flex-col items-stretch">
             <menu className="flex gap-4 items-center justify-end my-4">
-                <li><button type='reset' className="text-stone-700 hover:text-stone-950">Cancel</button></li>
+                <li><button type='reset' className="text-stone-700 hover:text-stone-950" onClick={onCancel}>Cancel</button></li>
                 <li><button type='submit' onClick={saveNewProject} className="bg-stone-800 hover:bg-stone-950 text-white rounded px-6 py-2 font-extralight">Save</button></li>
             </menu>
             <h2 className="hidden">New Project</h2>
