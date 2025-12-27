@@ -11,6 +11,11 @@ export default function NewProject({onAdd, onCancel}){
         const enteredDescription = description.current.value;
         const enteredDate = dueDate.current.value;
 
+        if(!enteredTitle.trim() || !enteredDescription.trim() || !enteredDate.trim()){
+            alert('Please fill out all fields');
+            return;
+        }
+
         onAdd({
             title : enteredTitle, 
             description : enteredDescription, 
@@ -27,9 +32,9 @@ export default function NewProject({onAdd, onCancel}){
             </menu>
             <h2 className="hidden">New Project</h2>
             <div className="flex flex-col uppercase text-stone-500">
-                <Input ref={title} label='Title'></Input>
+                <Input ref={title} label='Title' required></Input>
                 <Input ref={description} label='Description' isTextarea></Input>
-                <Input ref={dueDate} label='Due' type='date'></Input>
+                <Input ref={dueDate} label='Due' type='date' required></Input>
             </div>
         </div>
     )

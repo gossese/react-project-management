@@ -4,7 +4,7 @@ export default function Project({deleteProject, project, handleDeleteTask, handl
 
     return (
         <article className="w-[35rem] mt-16">
-            <header border-b-2>
+            <header>
                 <div className="pb-4 mb-4 flex border-b-2 justify-between capitalize">
                     <h1 className="text-stone-600 text-3xl font-semibold ">{project.title}</h1>
                     <button onClick={() => deleteProject(project)}>Delete</button>

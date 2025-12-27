@@ -27,7 +27,7 @@ function App() {
 
   function handleDeleteTask(indexToDelete) {
     setTaskList((prev) => {
-      return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete
+      return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete, we're not using the first parameter (the element itself)
     });
   }
 
