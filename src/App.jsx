@@ -36,6 +36,12 @@ function App() {
   function handleSaveNewProject(newProject) {
     setProjects((prev) => [...prev, newProject]);
     setUiState(ProjectState.NONE_SELECTED);
+    setProjectId(null);
+  }
+
+  function handleStartNewProject(){
+    setUiState(ProjectState.IS_CREATING);
+    setProjectId(null);
   }
 
   function handleClickProject(project) {
@@ -46,7 +52,10 @@ function App() {
   function handleDeleteProject() {
     setProjects((prev) => prev.filter((p) => p.id !== selectedProjectId)); //only use the element for filtering
     setUiState(ProjectState.NONE_SELECTED);
+    setProjectId(null);
   }
+
+  // Main Screen -------------------------
 
   function renderMainScreen() {
     switch (uiState) {
@@ -70,7 +79,7 @@ function App() {
       default: // ProjectState.NONE_SELECTED
         return (
           <NoProjectSelected
-            handleClick={() => setUiState(ProjectState.IS_CREATING)}
+            handleClick={handleStartNewProject}
           />
         );
     }
@@ -78,15 +87,12 @@ function App() {
 
   return (
     <main className="flex flex-row gap-8 h-screen">
-      {/* aside[title="de Titel"]{hoi}>div Emmet*/}
-      {/* ul>li*5 */}
       <h1 className="hidden">Project Management React App</h1>
       <Sidebar
         projects={projects}
-        handleClick={() => {
-          setUiState(ProjectState.IS_CREATING);
-        }}
+        handleClick={handleStartNewProject}
         handleClickProject={(project) => handleClickProject(project)}
+        selectedProjectId={selectedProjectId}
       />
       {renderMainScreen()}
     </main>
