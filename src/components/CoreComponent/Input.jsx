@@ -1,8 +1,10 @@
 
 export default function Input({ label, isTextarea = false, className="", error, ...rest }) {
-
-    const basicClasses = `text-stone-600 p-1 border-solid border-b-2 hover:border-b-black focus:border-b-black focus:outline-none focus:bg-stone-300 rounded `; 
-    const classes = error ? basicClasses + 'bg-red-200 border-red-600' : basicClasses + 'border-b-stone-300 bg-stone-200'
+    const classes = `text-stone-600 p-1 border-solid border-b-2 hover:border-b-black focus:border-b-black focus:outline-none focus:bg-stone-300 rounded ${
+        error 
+            ? 'bg-red-200 border-red-600' 
+            : 'border-b-stone-300 bg-stone-200'
+    }`;
     
     const divClasses = `flex flex-col gap-1 my-4 ${className}`;
     

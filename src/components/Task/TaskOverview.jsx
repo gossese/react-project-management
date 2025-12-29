@@ -1,4 +1,4 @@
-import Input from "../Input";
+import Input from "../CoreComponent/Input";
 import Task from "./Task";
 import { useRef, useState } from "react";
 

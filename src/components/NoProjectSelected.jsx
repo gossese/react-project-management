@@ -1,5 +1,5 @@
 import img from '../assets/no-projects.png'
-import PrimaryButton from './primaryButton'
+import PrimaryButton from './CoreComponent/PrimaryButton'
 
 export default function NoProjectSelected({ handleClick }) {
     return (
