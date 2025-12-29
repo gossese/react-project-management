@@ -11,7 +11,8 @@ function App() {
 
   const [uiState, setUiState] = useState(ProjectState.NONE_SELECTED);
   const [selectedProjectId, setProjectId] = useState(null);
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState([]); // this tasklist could also be merged with the projects, so it would look like: 
+  // [projects: [{title, description, id}], tasks: [{prId, tName, tId}]]
 
   // TASKS --------------------------
 
@@ -21,6 +22,7 @@ function App() {
       {
         prId: selectedProjectId,
         tName: taskName,
+        tId: Math.random(),
       },
     ]);
   }
@@ -39,7 +41,7 @@ function App() {
     setProjectId(null);
   }
 
-  function handleStartNewProject(){
+  function handleStartNewProject() {
     setUiState(ProjectState.IS_CREATING);
     setProjectId(null);
   }
@@ -77,11 +79,7 @@ function App() {
           />
         );
       default: // ProjectState.NONE_SELECTED
-        return (
-          <NoProjectSelected
-            handleClick={handleStartNewProject}
-          />
-        );
+        return <NoProjectSelected handleClick={handleStartNewProject} />;
     }
   }
 
