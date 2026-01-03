@@ -5,33 +5,13 @@ import Project from "./components/Project";
 import { useState } from "react";
 import { ProjectState } from "./constants/ProjectState";
 import { demoProjects } from "./data/DemoProjects";
+import TaskContextProvider from "./store/task-context";
 
 function App() {
   const [projects, setProjects] = useState(demoProjects);
 
   const [uiState, setUiState] = useState(ProjectState.NONE_SELECTED);
   const [selectedProjectId, setProjectId] = useState(null);
-  const [taskList, setTaskList] = useState([]); // this tasklist could also be merged with the projects, so it would look like: 
-  // [projects: [{title, description, id}], tasks: [{prId, tName, tId}]]
-
-  // TASKS --------------------------
-
-  function handleAddTask(taskName) {
-    setTaskList((prev) => [
-      ...prev,
-      {
-        prId: selectedProjectId,
-        tName: taskName,
-        tId: Math.random(),
-      },
-    ]);
-  }
-
-  function handleDeleteTask(indexToDelete) {
-    setTaskList((prev) => {
-      return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete, we're not using the first parameter (the element itself)
-    });
-  }
 
   // Projects --------------------------
 
@@ -73,9 +53,6 @@ function App() {
           <Project
             project={projects.find((p) => p.id == selectedProjectId)}
             deleteProject={handleDeleteProject}
-            handleAddTask={handleAddTask}
-            handleDeleteTask={handleDeleteTask}
-            taskList={taskList}
           />
         );
       default: // ProjectState.NONE_SELECTED
@@ -84,16 +61,19 @@ function App() {
   }
 
   return (
-    <main className="flex flex-row gap-8 h-screen">
-      <h1 className="hidden">Project Management React App</h1>
-      <Sidebar
-        projects={projects}
-        handleClick={handleStartNewProject}
-        handleClickProject={(project) => handleClickProject(project)}
-        selectedProjectId={selectedProjectId}
-      />
-      {renderMainScreen()}
-    </main>
+
+    <TaskContextProvider selectedProjectId={selectedProjectId}>
+      <main className="flex flex-row gap-8 h-screen">
+        <h1 className="hidden">Project Management React App</h1>
+        <Sidebar
+          projects={projects}
+          handleClick={handleStartNewProject}
+          handleClickProject={(project) => handleClickProject(project)}
+          selectedProjectId={selectedProjectId}
+        />
+        {renderMainScreen()}
+      </main>
+    </TaskContextProvider>
   );
 }
 

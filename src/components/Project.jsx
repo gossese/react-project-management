@@ -3,9 +3,6 @@ import TaskOverview from "./Task/TaskOverview";
 export default function Project({
   deleteProject,
   project,
-  handleDeleteTask,
-  handleAddTask,
-  taskList,
 }) {
   const formattedDate = project?.date
     ? new Date(project.date).toLocaleDateString({
@@ -36,9 +33,6 @@ export default function Project({
       </header>
       <TaskOverview
         project={project}
-        handleAddTask={handleAddTask}
-        handleDeleteTask={handleDeleteTask}
-        taskList={taskList}
       ></TaskOverview>
     </article>
   );
