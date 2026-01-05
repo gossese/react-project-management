@@ -1,9 +1,11 @@
 import TaskOverview from "./Task/TaskOverview";
+import { ProjectContext } from "../store/project-context";
+import { useContext } from "react";
 
-export default function Project({
-  deleteProject,
-  project,
-}) {
+export default function Project() {
+  const {projects, selectedProjectId, handleDeleteProject} = useContext(ProjectContext);
+  const project = projects.find((p) => p.id == selectedProjectId);
+
   const formattedDate = project?.date
     ? new Date(project.date).toLocaleDateString({
         year: "numeric",
@@ -19,7 +21,7 @@ export default function Project({
           <h1 className="text-stone-600 text-3xl font-semibold ">
             {project.title}
           </h1>
-          <button onClick={() => deleteProject(project)}>Delete</button>
+          <button onClick={handleDeleteProject}>Delete</button>
         </div>
         <p
           className="mb-4 text-stone-400 font-light text-sm"

@@ -1,38 +1,39 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, use } from "react";
+import { ProjectContext } from "../store/project-context";
 
 export const TaskContext = createContext({
-    taskList: [],
-    handleAddTask: () => {},
-    handleDeleteTask: () => {},
-})
+  taskList: [],
+  handleAddTask: () => {},
+  handleDeleteTask: () => {},
+});
 
-export default function TaskContextProvider({children, selectedProjectId}){
+export default function TaskContextProvider({ children }) {
   const [taskList, setTaskList] = useState([]);
-  
-    function handleAddTask(taskName) {
-      setTaskList((prev) => [
-        ...prev,
-        {
-          prId: selectedProjectId,
-          tName: taskName,
-          tId: Math.random(),
-        },
-      ]);
-    }
-  
-    function handleDeleteTask(indexToDelete) {
-      setTaskList((prev) => {
-        return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete, we're not using the first parameter (the element itself)
-      });
-    }
+  const { selectedProjectId } = use(ProjectContext);
 
-    const ctxValue = {
-        taskList,
-        handleAddTask,
-        handleDeleteTask
-    }
+  function handleAddTask(taskName) {
+    setTaskList((prev) => [
+      ...prev,
+      {
+        prId: selectedProjectId,
+        tName: taskName,
+        tId: Math.random(),
+      },
+    ]);
+  }
 
-    return (
-        <TaskContext value={ctxValue}>{children}</TaskContext>
-    )
+  function handleDeleteTask(indexToDelete) {
+    setTaskList((prev) => {
+      return prev.filter((_, index) => index !== indexToDelete); //only use the optional parameter 'index' to filter out the task that we want to delete, we're not using the first parameter (the element itself)
+      // filter on tId would be better
+    });
+  }
+
+  const ctxValue = {
+    taskList,
+    handleAddTask,
+    handleDeleteTask,
+  };
+
+  return <TaskContext value={ctxValue}>{children}</TaskContext>;
 }

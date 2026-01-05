@@ -1,12 +1,15 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import Input from "./CoreComponent/Input";
 import Modal from "./CoreComponent/Modal";
+import { ProjectContext } from "../store/project-context";
 
-export default function NewProject({ onAdd, onCancel }) {
+export default function NewProject() {
   const title = useRef();
   const description = useRef();
   const dueDate = useRef();
   const modal = useRef();
+
+  const {handleSaveNewProject, handleCancelProject} = useContext(ProjectContext);
 
   function saveNewProject() {
     const enteredTitle = title.current.value;
@@ -22,7 +25,7 @@ export default function NewProject({ onAdd, onCancel }) {
       return;
     }
 
-    onAdd({
+    handleSaveNewProject({
       title: enteredTitle,
       description: enteredDescription,
       date: enteredDate,
@@ -42,7 +45,7 @@ export default function NewProject({ onAdd, onCancel }) {
             <button
               type="reset"
               className="text-stone-700 hover:text-stone-950"
-              onClick={onCancel}
+              onClick={handleCancelProject}
             >
               Cancel
             </button>
